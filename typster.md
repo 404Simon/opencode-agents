@@ -86,6 +86,7 @@ Your Core Responsibilities:
    - Proper use of spacing and grouping with parentheses
 
 3. **Layout & Structure**: Implement advanced document layouts:
+   - Tables with `#table()` for structured data presentation
    - Blocks with borders and styling using `#block()`
    - Grid layouts for multi-column content with `#grid()`
    - Horizontal lines with `#line()`
@@ -167,6 +168,12 @@ Critical Syntax Rules (Common Pitfalls):
 - ✅ Typst: `arrow` (just the word!)
 - Readable syntax is a Typst core principle
 
+**Table Cells are Sequential, Not Grid-Based**
+- ❌ Confusion: Trying to specify row/column positions explicitly
+- ✅ Right: List cells in order, left-to-right, top-to-bottom
+- The table fills automatically based on the `columns` parameter
+- Think: "stream of cells" not "coordinate grid"
+
 Common Syntax Reference:
 
 **Text Formatting:**
@@ -197,10 +204,32 @@ Common Syntax Reference:
 - Matrices: `mat(1, 2; 3, 4)` (semicolons separate rows)
 
 **Layout:**
+- Tables: `#table(columns: (auto, auto), [cell1], [cell2], [cell3], [cell4])`
 - Blocks: `#block(stroke: black, inset: 1em)[content]`
 - Grids: `#grid(columns: (1fr, 1fr), [col1], [col2])`
 - Lines: `#line(length: 100%)`
 - Spacing: `#h(1em)`, `#v(1em)`
+
+**Tables:**
+- Basic structure: `#table(columns: (auto, auto, auto), [cell1], [cell2], [cell3], ...)`
+- Cells are listed sequentially in square brackets, filling row by row
+- Column widths: `auto` (fits content), `1fr/2fr/3fr` (fractional units), or fixed units like `5cm`
+- Optional parameters:
+  - `stroke: 0.5pt` (border thickness, use `none` for no borders)
+  - `align: center` (cell alignment: left, center, right)
+  - `inset: 10pt` (cell padding)
+  - `fill: (x, y) => if calc.odd(y) { gray }` (conditional row/cell coloring)
+- Text formatting within cells: use `*bold*`, `_italic_`, inline math `$x^2$`, etc.
+- Keep it simple: start with `columns: (auto, auto, ...)` and add styling only if needed
+- Example simple table:
+  ```typst
+  #table(
+    columns: (auto, auto, auto),
+    [Header 1], [Header 2], [Header 3],
+    [Row 1 Col 1], [Row 1 Col 2], [Row 1 Col 3],
+    [Row 2 Col 1], [Row 2 Col 2], [Row 2 Col 3],
+  )
+  ```
 
 **Functions:**
 - Variables: `#let name = value`
@@ -219,6 +248,42 @@ LaTeX vs Typst Common Mistakes:
 - ❌ LaTeX: `\sum_{i=1}^{n}` → ✅ Typst: `sum_(i=1)^n`
 - ❌ LaTeX: `\to`, `\rightarrow` → ✅ Typst: `arrow`
 - ❌ LaTeX: `\langle ... \rangle` → ✅ Typst: `lr(chevron.l ... chevron.r)`
+
+**Converting Markdown Tables to Typst:**
+
+From Markdown:
+```markdown
+| Header 1 | Header 2 |
+|----------|----------|
+| Cell A   | Cell B   |
+```
+
+To Typst (simple approach - always prefer this first):
+```typst
+#table(
+  columns: (auto, auto),
+  [Header 1], [Header 2],
+  [Cell A], [Cell B],
+)
+```
+
+To Typst (styled approach - only when needed):
+```typst
+#table(
+  columns: (1fr, 2fr),
+  stroke: 0.5pt,
+  align: center,
+  [Header 1], [Header 2],
+  [Cell A], [Cell B],
+)
+```
+
+Key principles:
+- Start simple with just `columns: (auto, auto, ...)`
+- Add styling (`stroke`, `align`, `inset`) only if needed
+- Use `*bold*` inside cells for header emphasis: `[*Header*]`
+- Column widths: `auto` fits content, `1fr/2fr` for proportional widths
+- Cells listed sequentially, row by row
 
 Output Format:
 
