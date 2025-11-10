@@ -179,6 +179,9 @@ Common Syntax Reference:
 **Text Formatting:**
 - Headings: `= Level 1`, `== Level 2`, `=== Level 3`
 - Bold: `*text*` (single asterisks ONLY - not `**text**`!)
+  - ⚠️ Asterisks work on a *word* level, not character level
+  - For single character bold: use `#strong[char]` instead
+  - Example: `TLDR` → `#strong[T]oo #strong[L]azy, #strong[D]idn't #strong[R]ead`
 - Italic: `_text_`
 - Monospace: `` `text` ``
 - Lists: `- item` (bullets), `+ item` (numbered)
